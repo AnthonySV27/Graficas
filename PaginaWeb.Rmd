@@ -1,0 +1,186 @@
+---
+title: "USO DE TRANSPORTE - ASAMBLEA LEGISLATIVA"
+output: html_notebook
+---
+
+<div style="text-align: justify;">
+En el siguiente apartado se realizó un análisis de las gráficas Generadas en base a los datos de los Transporte de la Asamblea Legislativa:
+
+<span style="font-size: 150%; font-weight: bold; font-style: italic;">Cantidad por Tipo de Servicio</span>
+
+Por lo que se puede apreciar en la gráfica de barras, se analizan la Cantidad por Tipo de Servicio de la Asamblea Legislativa; dentro de la búsqueda de dichos datos, los Tipos de Servicios existentes son el tipo de Gira Comunal y Servicios costos, lo que representan alrededor de  450 y 670 correspondientemente servicios.
+</div>
+
+
+```{r echo=FALSE}
+library(ggplot2)
+library(readxl)
+library(tidyverse)
+library(dplyr)
+
+datos <- read_xlsx("C:\\Anthony\\Anthony\\Tec\\Semestre I 2024\\Visualización de Información\\Proyecto I\\proyecto1.xlsx")
+
+# GRAFICA 1
+datos_contados <- summarise(group_by(datos, `TIPO SERVICIO`), Cantidad = n())
+ggplot(datos_contados, aes(x = `TIPO SERVICIO`, y = Cantidad)) +
+  geom_bar(stat = "identity", fill = "steelblue") +
+  labs(x = "Tipo de Servicio", y = "Cantidad", title = "Cantidad por Tipo de Servicio")
+```
+
+<div style="text-align: justify;">
+
+<span style="font-size: 150%; font-weight: bold; font-style: italic;">Cantidad de Viajes por Chofer</span>
+
+
+En la siguiente gráfica de barras se analiza la Cantidad de viajes por Chofer; donde se pueden apreciar en el eje horizontal los nombres de los 16 choferes existentes en este registro y en el eje vertical la cantidad de viajes realizados por estos. Se puede ver a nivel más general, contando los 4 choferes con un total de viajes más alto (del más alto al más bajo entre estos) corresponden respectivamente a: Roy Arvizu Ramírez, Rosvin Esquivel Sánchez, Julián Vega Rivera, y Miguel Cáceres Rodríguez, donde los viajes superan 128 viajes; luego de estos la cantidad de viajes de los demás choferes están alrededor de 2 a 128 desplazamientos aproximadamente.
+</div>
+
+
+```{r echo=FALSE}
+# GRAFICA 2
+datos_contados1 <- summarise(group_by(datos, `CHOFER`), Cantidad1 = n())
+ggplot(datos_contados1, aes(x = `CHOFER`, y = Cantidad1)) +
+       geom_bar(stat = "identity", fill = "steelblue") +
+       labs(x = "CHOFERES", y = "Cantidad Viajes", title = "Cantidad de viajes por Chofer") +
+       theme(axis.text.x = element_text(angle = -90, size = 6, hjust = 0))
+```
+
+<div style="text-align: justify;">
+
+<span style="font-size: 150%; font-weight: bold; font-style: italic;">Cantidad de Viajes por Diputado</span>
+
+
+En siguiente gráfica de barras se analizan la Cantidad de viajes realizados por cada Diputado dentro de la Asamblea Legislativa; de un total de 40 diputados de los datos extraídos se pudo generar una gráfica de barras donde muestra en el eje horizontal los diputados y en el vertical la cantidad de viajes realizados por estos; en un análisis general, tomando en cuenta los 4 diputados con mayor cantidad de Viajes realizados (del más alto al más bajo entre estos) corresponden respectivamente a: Gourzong Cerdas David Hubert, Monge Granados Maria Vita, Solís Quirós Maria Inés, Y Alvarado Arias Mileidy, estos superan los 100 viajes, mientras el resto de diputados tienen menos recorridos bajo este límite.
+</div>
+
+
+```{r echo=FALSE}
+# GRAFICA 3
+datos_contados2 <- summarise(group_by(datos, `DIPUTADO (A)`), Cantidad2 = n())
+ggplot(datos_contados2, aes(x = `DIPUTADO (A)`, y = Cantidad2)) +
+  geom_bar(stat = "identity", fill = "steelblue", width = 0.7) +  # Ajustar el ancho de las barras
+  labs(x = "DIPUTADOS", y = "Cantidad Viajes", title = "Cantidad de viajes por Diputado") +
+  theme(axis.text.x = element_text(angle = -90, size = 6, hjust = 0))  # Ajustar el tamaño de las etiquetas del eje x
+```
+
+
+
+
+<div style="text-align: justify;">
+
+<span style="font-size: 150%; font-weight: bold; font-style: italic;">Total de KM por Diputado</span>
+
+
+En siguiente gráfica de barras se analiza el total de kilometraje recorrido por los diputados, donde por sus colores es más fácil de diferenciar los diferentes datos de los distintos diputados; tomando en cuenta los 4 diputados con mayor cantidad de Viajes realizados (del más alto al más bajo entre estos) corresponden respectivamente a:  Viales Villegas Gustavo, Monge Granados Maria Vita, Gourzong Cerdas David Hubert, y Muñoz Céspedes Walter; estos kilometrajes superan los 17 kilómetros aproximadamente, mientras los otros son inferiores a esta cifra.
+</div>
+
+
+```{r echo=FALSE}
+#Grafica 4
+# Crear un dataframe con los datos de suma por diputado
+df_diputados <- data.frame(Diputado = datos$`DIPUTADO (A)`, Total_KM = datos$`TOTAL KM`)
+
+# Crear el gráfico de barras con ggplot2 y etiquetas en ángulo diagonal
+ggplot(df_diputados, aes(x = Diputado, y = Total_KM, fill = Diputado)) +
+  geom_bar(stat = "identity") +
+  labs(x = "Diputados", y = "Total de KM", title = "Total de KM por Diputado") +
+  theme(axis.text.x = element_text(angle = -90, size = 6, hjust = 0)) +
+  guides(fill = FALSE) 
+```
+
+<div style="text-align: justify;">
+
+<span style="font-size: 150%; font-weight: bold; font-style: italic;">Total de KM por Chofer</span>
+
+
+En siguiente gráfica ahora se va hacer un análisis del Total de kilometraje de los choferes contratados en la Asamblea Legislativa; se utiliza el gráfico de barras donde se muestra en el eje horizontal los choferes y en el vertical la cantidad de kilometrajes realizados por estos; tomando en cuenta los 4 diputados con mayor cantidad de Viajes realizados (del más alto al más bajo entre estos) corresponden respectivamente a: Alfredo Marin Morales, Rosvin Esquivel Sánchez, Juan Vega Rivera y Miguel Cáceres Rodríguez; estos kilometrajes superan los 25000 kilómetros aproximadamente, mientras los otros son inferiores a esta cifra.
+</div>
+
+```{r echo=FALSE}
+# GRAFICA 5
+sum_km_por_chofer <- datos %>%
+     group_by(CHOFER) %>%
+     summarise(total_km = sum(`TOTAL KM`))
+
+# Crear un dataframe con los datos de suma por chofer
+df <- data.frame(Chofer = sum_km_por_chofer$CHOFER, Total_KM = sum_km_por_chofer$total_km)
+
+# Crear el gráfico de barras con ggplot2 y etiquetas en ángulo diagonal
+ggplot(df, aes(x = Chofer, y = Total_KM, fill = Chofer)) +
+  geom_bar(stat = "identity") +
+  labs(x = "Choferes", y = "Total de KM", title = "Total de KM por Chofer") +
+  theme(axis.text.x = element_text(angle = -90, size = 6, hjust = 0)) +
+  guides(fill = FALSE)
+```
+<div style="text-align: justify;">
+
+<span style="font-size: 150%; font-weight: bold;font-style: italic;">Cantidad de viajes por Chofer en Diferentes Años</span>
+
+
+En siguiente gráfica ahora se va hacer un análisis del Cantidad de Viajes por chofer contratados en la Asamblea Legislativa, mas esta esta segmentada en 3 secciones los chuales son los años 2018, 2019 y 2020, una gráfica de facetas, donde se ordenan los viajes en los años indicados; se utiliza el gráfico de barras donde se muestra en el eje horizontal los choferes y en el vertical la cantidad de Viajes realizados por estos en las secciones mencionadas; tomando en cuenta los 3 diputados con mayor cantidad de Viajes realizados (del más alto al más bajo entre estos) corresponden respectivamente a: 
+
+Sección 1 (2018): Juan Vega Rivera,  Rosvin Esquivel Sánchez y Roy Arvizu Ramírez; la cantidad de viajes superan los 38 aproximadamente.
+
+Sección 2 (2019): Rosvin Esquivel Sánchez, Roy Arvizu Ramírez y Jose Campos Quirós; la cantidad de viajes superan los 95 aproximadamente.
+
+Sección 3 (2020): Roy Arvizu Ramírez, Miguel Cáceres Rodríguez y Juan Vega Rivera; la cantidad de viajes superan los 14 aproximadamente.
+</div
+
+```{r echo=FALSE}
+#GRAFICA FACETAS
+
+ # Convertir la columna de fecha a formato de fecha
+   datos$`FECHA INICIAL` <- as.Date(datos$`FECHA INICIAL`, format = "%d/%m/%Y")
+ 
+   # Filtrar los datos por los años 2018, 2019 y 2020
+   datos_filtrados <- datos %>%
+       filter(year(`FECHA INICIAL`) %in% c(2018, 2019, 2020))
+ 
+   # Contar la cantidad de viajes por chofer para cada año
+   datos_cont <- datos_filtrados %>%
+       group_by(CHOFER, year(`FECHA INICIAL`)) %>%
+       summarise(Cantidad_Viajes = n(), .groups = "drop")
+ ggplot(datos_cont, aes(x = CHOFER)) +
+       geom_bar(aes(y = Cantidad_Viajes, fill = factor(`year(\`FECHA INICIAL\`)`)), stat = "identity") +
+       labs(x = "CHOFERES", y = "Cantidad Viajes", title = "Cantidad de viajes por Chofer (2018-2020)") +
+       facet_wrap(~ `year(\`FECHA INICIAL\`)`, scales = "free_x") +
+       scale_fill_manual(values = c("steelblue", "salmon", "darkgreen")) +
+       theme(axis.text.x = element_text(angle = -90, size = 5, hjust = 0))
+```
+
+
+<div style="text-align: justify;">
+
+<span style="font-size: 150%; font-weight: bold;; font-style: italic;">Grafica Compuesta de Viajes por Diputados y Choferes</span>
+
+
+En la siguiente gráfica compuesta se ven la grafica 2 y 3, mencionadas anteriormente; se puede analizar ambas Cantidades de Viajes; se muestra que al menos 4 choferes y 4 diputados realizaron más de 100 viajes, mas, la mayoría es menor a esta cantidad; mas al ser menos choferes a realizar los viajes de todos los diputados de esta organización, los choferes, al menos 3, llegan a realizar 150 recorridos, mientras de los diputados ninguno llega a esta cantidada de viajes.
+</div>
+
+
+```{r echo=FALSE}
+#GRAFICA COMPUESTA 
+ 
+ library(ggplot2)
+ library(gridExtra)
+ 
+ # GRAFICA 2
+ datos_contados1 <- summarise(group_by(datos, `CHOFER`), Cantidad1 = n())
+ grafica_2 <- ggplot(datos_contados1, aes(x = `CHOFER`, y = Cantidad1)) +
+   geom_bar(stat = "identity", fill = "steelblue") +
+   labs(x = "CHOFERES", y = "Cantidad Viajes", title = "Cantidad de viajes por Chofer") +
+   theme(axis.text.x = element_text(angle = -90, size = 6, hjust = 0))
+ 
+ # GRAFICA 3
+ datos_contados2 <- summarise(group_by(datos, `DIPUTADO (A)`), Cantidad2 = n())
+ grafica_3 <- ggplot(datos_contados2, aes(x = `DIPUTADO (A)`, y = Cantidad2)) +
+   geom_bar(stat = "identity", fill = "steelblue") +
+   labs(x = "DIPUTADOS", y = "Cantidad Viajes", title = "Cantidad de viajes por Diputado") +
+   theme(axis.text.x = element_text(angle = -90, size = 5, hjust = 0))  # Ajustar el tamaño de las etiquetas del eje x
+ 
+ # Combinar las dos gráficas en una sola
+ grid.arrange(grafica_2, grafica_3, nrow = 1)
+```
+\n\n
+
+
